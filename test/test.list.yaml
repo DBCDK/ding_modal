@@ -1,0 +1,17 @@
+#   test.list.yaml
+#   list of tests in the repository, and suggestions when to run them (can be overridden in test.conf.yaml or feature.test.conf.yaml).
+
+selenium :
+- name : DingModalSeleniumTest
+simpletest :
+# DrupalUnitTestCase and DrupalWebTestCase
+- name : DingModalUnitTest
+  path : test/ding_modal_unit_test.test
+- name : DingModalWebTestCase
+  path : test/ding_modal_web_test.test
+# - name : <test suite>
+#   path :
+#     Path to file, if different from default path, and named different than <test suite>.test
+#     Default path: test/simpletest/<test suite>.test
+#   workflow :
+#     NB: 'all' test use standard Drupal test API: drush test-run --all (at least to begin with)

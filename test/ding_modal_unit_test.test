@@ -1,0 +1,128 @@
+<?php
+
+class DingModalUnitTest extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Ding Modal unit test'),
+      'description' => t('Unit testing Ding Modal'),
+      'group' => t('Ding - Modal'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp();
+  }
+
+  // test that AJAX attributes are set, if none are set previously.
+  public function testSubmitAttributes() {
+
+    module_load_include('module', 'ding_modal');
+
+    $input1 = array(
+      'foo' => array(
+        'bar' => array(
+          'ding_modal_baz' => array(
+            '#type' => 'submit',
+            '#attributes' => array(),
+          ),
+        ),
+      ),
+      'actions' => array(
+        'submit' => array(
+          '#type' => 'submit',
+          '#attributes' => array(),
+        ),
+      ),
+    );
+
+    $output1 = array(
+      'foo' => array(
+        'bar' => array(
+          'ding_modal_baz' => array(
+            '#type' => 'submit',
+            '#attributes' => array(
+              'class' => array(
+                0 => 'use-ajax-submit',
+              ),
+            ),
+            '#ajax' => array(
+              'callback' => 'ajax_form_callback',
+              'wrapper' => 'ding-modal-content',
+              'method' => 'replace',
+              'effect' => 'fade',
+              'speed' => 'slow',
+            ),
+          ),
+        ),
+      ),
+      'actions' => array(
+        'submit' => array(
+          '#type' => 'submit',
+          '#attributes' => array(
+            'class' => array(
+              0 => 'use-ajax-submit',
+            ),
+          ),
+          '#ajax' => array(
+            'callback' => 'ajax_form_callback',
+            'wrapper' => 'ding-modal-content',
+            'method' => 'replace',
+            'effect' => 'fade',
+            'speed' => 'slow',
+          ),
+        ),
+      ),
+    );
+
+    _ding_modal_submit_attributes($input1);
+
+    $this->assertTrue($input1 == $output1, 'AJAX submit attributes are set correctly.');
+
+  }
+
+  
+
+  public function testSubmitAttributesWithAJAX() {
+
+    module_load_include('module', 'ding_modal');
+
+    $input2 = array(
+      'actions' => array(
+        'submit' => array(
+          '#type' => 'submit',
+          '#attributes' => array(),
+          '#ajax' => array(
+            'callback' => 'ajax_form_some_other_callback',
+            'wrapper' => 'ding-modal-content',
+          ),
+        ),
+      ),
+    );
+
+    $output2 = array(
+      'actions' => array(
+        'submit' => array(
+          '#type' => 'submit',
+          '#attributes' => array(
+            'class' => array(
+              0 => 'use-ajax-submit',
+            ),
+          ),
+          '#ajax' => array(
+            'callback' => 'ajax_form_some_other_callback',
+            'wrapper' => 'ding-modal-content',
+          ),
+        ),
+      ),
+    );
+
+    _ding_modal_submit_attributes($input2);
+
+    $this->assertTrue($input2 == $output2, 'AJAX submit attributes are not overwritten if already set.');
+
+  }
+
+}
+
+

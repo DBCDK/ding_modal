@@ -1,0 +1,11 @@
+name = Ding! - Modal Window
+description = Configure a modal window for node paths.
+core = 7.x
+version = 7.x-0.1
+package = Ding!
+
+files[] = test/ding_modal_web_test.test
+files[] = test/ding_modal_unit_test.test
+
+scripts[] = js/ding_modal.js
+scripts[] = js/ding_modal_events.js

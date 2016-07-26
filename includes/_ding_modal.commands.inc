@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * Returns array with command for the ding_custom_reload command.
+ *
+ * Instead of just reloading the page the ding_custom_reload command requests
+ * the browser to go to the current URL, which is done to avoid pop-up messages
+ * in FF and IE when the logs in from a page with a form displayed.
+ *
+ * The command is implemented in ding.modal.js
+ *
+ * @return array
+ */
+function ding_modal_command_reload() {
+  return array(
+    'command' => 'ding_modal_reload',
+  );
+}
+
+/**
+ * Replace the form currently displayed in a modal
+ *
+ * @param string $html Rendered HTML
+ * @param string $selector the selector whose content should be replaced
+ * @return array
+ */
+function ding_modal_command_replace_form($html, $selector = '#ding-modal-form'){
+  return array(
+    'command' => 'ding_modal_replace_form',
+    'selector' => $selector,
+    'html' => $html,
+  );
+}
+
+/**
+ * Dismiss the current modal
+ *
+ * @return array
+ */
+function ding_modal_command_dismiss(){
+  return array(
+    'command' => 'ding_modal_dismiss',
+  );
+}
+
+/**
+ * Do a client side redirect
+ *
+ * @param string $url
+ * @param array $options
+ * @return array
+ */
+function ding_modal_command_redirect($url, $options = array()){
+  return array(
+    'command' => 'ding_modal_redirect',
+    'url' => url($url, $options),
+  );
+
+}
+
+/**
+ * Replace the modal title
+ *
+ * @param string $title String
+ * @param string $selector the selector whose content should be replaced
+ * @return array
+ */
+function ding_modal_command_set_title($title, $selector = '.ding-modal-title'){
+  return array(
+    'command' => 'ding_modal_set_title',
+    'selector' => $selector,
+    'title' => $title,
+  );
+}

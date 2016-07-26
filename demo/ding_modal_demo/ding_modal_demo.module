@@ -1,0 +1,161 @@
+<?php
+
+include_once 'ding_modal_demo.modal.inc';
+
+// TO DO : create block with links to be replaced with jacascript.
+
+/**
+ * @file
+ * Ding Modal Demo module, Basic Ajax form submit (Ajax framework).
+ */
+
+ /**
+  * Implements hook_menu().
+  */
+function ding_modal_demo_menu() {
+
+  $items['ding_modal_demo/baz'] = array(
+    'title' => 'Simple AJAX Example',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_modal_demo_baz_form'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function ding_modal_demo_block_info() {
+
+  $blocks['ding_modal_demo_block'] = array(
+    'title' => 'Ding Modal Demo links',
+    'info' => t('Ding Modal Demo links'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+
+  return $blocks;
+
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function  ding_modal_demo_block_view($delta = '') {
+
+  $block = array();
+  
+  $wrapper = array(
+    '#type' => 'container',
+  );
+
+  $render['foo'] = array(
+    '#theme' => 'link',
+    '#text' => 'Link to modal text',
+    '#path' => 'ding_modal_demo/foo',
+    '#options' => array(
+      'attributes' => array(
+        'id' => "ding-modal-foo",
+      ),
+      'html' => FALSE,
+    ),
+    '#suffix' => '<br/>',
+  );
+      
+  $render['bar'] = array(
+    '#theme' => 'link',
+    '#text' => 'Link to modal form',
+    '#path' => 'ding_modal_demo/bar',
+    '#options' => array(
+      'attributes' => array(
+        'id' => "ding-modal-bar",
+      ),
+      'html' => FALSE,
+    ),
+    '#suffix' => '<br/>',
+  );
+      
+  $render['baz'] = array(
+    '#theme' => 'link',
+    '#text' => 'Link to modal subscription form',
+    '#path' => 'ding_modal_demo/baz',
+    '#options' => array(
+      'attributes' => array(
+        'id' => "ding-modal-baz",
+      ),
+      'html' => FALSE,
+    ),
+  );
+      
+  if ($delta == 'ding_modal_demo_block') {
+    $block['subject'] = t('Ding Modal Demo');
+    $block['content'] = $render;
+    $block['title'] = '<none>';
+    return $block;
+  }
+  return $block;
+}
+
+
+ /**
+  * A simple subscribe form.
+  */
+function ding_modal_demo_baz_form($form, &$form_state) {
+
+  $form['#prefix'] = '<div id="ding_modal_demo_baz_form">';
+  $form['#suffix'] = '</div>';
+
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Join Baz'),
+    '#required' => TRUE,
+    '#attributes' => array(
+      'placeholder' => t('mail@example.com'),
+    ),
+  );
+
+  $form['replace_textfield'] = array(
+    '#markup' => '<p>Join Baz, it\'s great!</p>',
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Subscribe'),
+    '#ajax' => array(
+      'callback' => 'ding_modal_demo_baz_form_ajax_submit',
+      'wrapper' => 'ding_modal_demo_baz_form',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+  );
+
+  return $form;
+
+}
+
+/**
+ * Ajax callback function.
+ */
+function ding_modal_demo_baz_form_ajax_submit($form, $form_state) {
+  // Dummy validation for demo purpose.
+  if (!empty($form_state['input']['email'])) {
+    $form['replace_textfield'] = array(
+      '#markup' => '<p>Joined Baz, yay!</p>',
+    );
+  }
+  return $form;
+}
+
+
+
+/**
+ * Demo form submit function.
+ */
+function ding_modal_demo_baz_form_submit($form, $form_state) {
+  // 
+}

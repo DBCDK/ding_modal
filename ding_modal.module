@@ -1,0 +1,184 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function ding_modal_menu() {
+
+  $items = _ding_modal_invoke_menus();
+  return $items;
+
+}
+
+
+/**
+ * Implements hook_page_build().
+ * Add the search/replace data to javascript settings.
+ * See: DingModal.rewritelinks in js/ding_modal.js
+ */
+function ding_modal_page_build(&$page) {
+
+  drupal_add_js(array('ding_modal' => array('ding_modal_settings' => _ding_modal_js_settings())), 'setting');
+  drupal_add_library('system', 'jquery.form');
+  drupal_add_library('system', 'drupal.ajax');
+
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function ding_modal_theme() {
+
+  return array(
+    'ding_modal_theme' => array(
+      'template' => 'theme/ding-modal',
+      'variables' => array(
+        'title' => '',
+        'content' => '',
+      ),
+    ),
+  );
+
+}
+
+
+/**
+ * Menu callback that returns the form in an AJAX callback.
+ * If JavaScript is disabled in the client we will never get here as 
+ * the link is being rewritten by client-side JavaScript.
+ *
+ * @return array
+ */
+function ding_modal_page_callback($modal_id) {
+
+  $items = _ding_modal_invoke_menus();
+
+  foreach ($items as $path => $item) {
+    if ($item['#id'] == $modal_id && !empty($item['#form'])) {
+      $form_id = $item['#form'];
+      $form_title = $item['title'];
+    }
+  }
+  
+  $form = drupal_get_form($form_id);
+
+  _ding_modal_submit_attributes($form);
+
+  $render = array(
+    '#theme' => 'ding_modal_theme',
+    '#title' => $form_title,
+    '#content' => $form,
+  );
+  
+  $commands[] = ajax_command_invoke('#ding-modal', 'foundation', array('reveal', 'open'));
+  $commands[] = ajax_command_html('#ding-modal', drupal_render($render));
+
+  return array('#type' => 'ajax', '#commands' => $commands);
+
+}
+
+
+/**
+ * Helper function to populate menu items.
+ *
+ * Add #ajaxt attribute on submit buttons to ensure Drupal will
+ * ajax-process the form and avoid a new pageload when the form is submitted.
+ *
+ * @return array
+ */
+function _ding_modal_submit_attributes(&$form) {
+  foreach ($form as $key => $item) {
+    if (!empty($item['#type']) && $item['#type'] == "submit") {
+      $form[$key]['#attributes']['class'][] = 'use-ajax-submit';
+      if (empty($form[$key]['#ajax'])) {
+        $form[$key]['#ajax'] = array(
+          'callback' => 'ajax_form_callback',
+          'wrapper' => 'ding-modal-content',
+          'method' => 'replace',
+          'effect' => 'fade',
+          'speed' => 'slow',
+        );
+      }
+    }
+    if ($key[0] != "#") {
+      // check form recursively
+      _ding_modal_submit_attributes($form[$key]);
+    }
+  }
+}
+
+/**
+ * Helper function to populate menu items.
+ *
+ * @return array
+ */
+function _ding_modal_invoke_menus() {
+  
+  $invoked_menus = &drupal_static(__FUNCTION__);
+
+  if (!isset($invoked_menus)) {
+
+    if ($cache = cache_get('ding_modal_invoked_menus')) {
+      $invoked_menus = $cache->data;
+    }
+    else {
+      $invoked_menus = array();
+      $menus = module_invoke_all('ding_modal_menus');
+
+      // default values:
+      $item = array(
+        'title' => NULL,
+        'page callback' => 'ding_modal_page_callback',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+        'page arguments' => array(1), // == $key
+        'delivery callback' => 'ajax_deliver',
+      );
+
+      try {
+        foreach ($menus as $key => $item_invoked) {
+          if ( array_key_exists('ding_modal/' . $key, $invoked_menus) ) {
+            throw new Exception(t('Duplicate Ding modal key: %1', array('%1' => 'ding_modal/' . $key), array('context' => 'ding_modal')));
+          }
+          $item['title'] = 'Ding modal: ' . ucfirst($key); // default title
+          $item['#id'] = $key;
+          $invoked_menus['ding_modal/' . $key] = array_merge($item, $item_invoked);
+        }
+      } catch (Exception $e) {
+        watchdog('ding_modal', $e->getMessage(), NULL, $severity = WATCHDOG_ERROR);
+      }
+
+      cache_set('ding_modal_invoked_menus', $invoked_menus, 'cache');
+    }
+  }
+
+  return $invoked_menus;
+
+}
+
+
+/**
+ * Helper function to populate javascript settings.
+ */
+function _ding_modal_js_settings() {
+
+  $ding_modal_settings = array();
+
+  $items = _ding_modal_invoke_menus();
+
+  foreach ($items as $path => $item) {
+
+    $ding_modal_setting['replace'] = $item['#replace'];
+    $ding_modal_setting['id'] = $item['#id'];
+    $ding_modal_setting['path'] = $path;
+    $ding_modal_setting['selectors'][] = "a[href*='" . $item['#replace'] . "']";
+    $ding_modal_setting['selectors'][] = "a[href*='?q=" . $item['#replace'] . "']";
+
+    $ding_modal_settings[$path] = $ding_modal_setting;
+
+  }
+
+  return $ding_modal_settings;
+
+}

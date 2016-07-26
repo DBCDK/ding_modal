@@ -1,0 +1,7 @@
+name = Ding modal demo
+description = Examles on how to use ding_modal
+core = 7.x
+version = 7.x-0.1
+package = Ding!
+
+dependencies[] = ding_modal

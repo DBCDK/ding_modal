@@ -36,6 +36,7 @@ function ding_modal_theme() {
       'variables' => array(
         'title' => '',
         'content' => '',
+        'messages' => '',
       ),
     ),
   );
@@ -73,6 +74,7 @@ function ding_modal_page_callback($modal_id) {
   
   $commands[] = ajax_command_invoke('#ding-modal', 'foundation', array('reveal', 'open'));
   $commands[] = ajax_command_html('#ding-modal', drupal_render($render));
+  $commands[] = ajax_command_prepend('#ding-modal-messages', theme('status_messages'));
 
   return array('#type' => 'ajax', '#commands' => $commands);
 

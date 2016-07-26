@@ -14,6 +14,9 @@
     <span class="ding-modal-title"><?php print $title; ?></span>
     <a class="close-reveal-modal">&#215;</a>
   </div>
+  <div id="ding-modal-messages">
+    <?php print drupal_render($messages); ?>
+  </div>
   <div id="ding-modal-content">
     <?php print drupal_render($content); ?>
   </div>

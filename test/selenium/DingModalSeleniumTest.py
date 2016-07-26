@@ -18,23 +18,4 @@ class DingModalWebdriverTest(selenium_helpers.NetpunktBaseWebdriverTestCase):
         self.browser.get(self.base_url)
         assert "Netpunkt" in self.browser.title
 
-    def test_foo(self):
-        assert self.is_setup
 
-    def test_bar(self):
-        self.assert_(self.base_url == selenium_helpers.NetpunktHelpers().base_url())
-
-
-
-###
-### Python unittest template.
-###
-import unittest
-class ExampleUnitTest(unittest.TestCase):
-    def test_a(self):
-        self.assert_(1 == 1)
-
-###
-### See also:
-### http://nose.readthedocs.io/en/latest/testing.html
-###

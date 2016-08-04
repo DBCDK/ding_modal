@@ -14,13 +14,26 @@ include_once 'ding_modal_demo.modal.inc';
   */
 function ding_modal_demo_menu() {
 
-  $items['ding_modal_demo/baz'] = array(
+  $items['baz'] = array(
     'title' => 'Simple AJAX Example',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_modal_demo_baz_form'),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+
+  $items['foo'] = array(
+    'page callback' => 'ding_modal_demo_foo',
+    'file' => 'ding_modal_demo.modal.inc', // relative path from ding_modal
+    'access callback' => TRUE,
+  );
+
+  $items['bar'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_modal_demo_bar_form'),
+    'access callback' => TRUE,
+  );
+
 
   return $items;
 
@@ -49,7 +62,7 @@ function ding_modal_demo_block_info() {
 function  ding_modal_demo_block_view($delta = '') {
 
   $block = array();
-  
+
   $wrapper = array(
     '#type' => 'container',
   );
@@ -57,7 +70,7 @@ function  ding_modal_demo_block_view($delta = '') {
   $render['foo'] = array(
     '#theme' => 'link',
     '#text' => 'Link to modal text',
-    '#path' => 'ding_modal_demo/foo',
+    '#path' => 'foo',
     '#options' => array(
       'attributes' => array(
         'id' => "ding-modal-foo",
@@ -66,11 +79,11 @@ function  ding_modal_demo_block_view($delta = '') {
     ),
     '#suffix' => '<br/>',
   );
-      
+
   $render['bar'] = array(
     '#theme' => 'link',
     '#text' => 'Link to modal form',
-    '#path' => 'ding_modal_demo/bar',
+    '#path' => 'bar',
     '#options' => array(
       'attributes' => array(
         'id' => "ding-modal-bar",
@@ -79,11 +92,11 @@ function  ding_modal_demo_block_view($delta = '') {
     ),
     '#suffix' => '<br/>',
   );
-      
+
   $render['baz'] = array(
     '#theme' => 'link',
     '#text' => 'Link to modal subscription form',
-    '#path' => 'ding_modal_demo/baz',
+    '#path' => 'baz',
     '#options' => array(
       'attributes' => array(
         'id' => "ding-modal-baz",
@@ -91,7 +104,7 @@ function  ding_modal_demo_block_view($delta = '') {
       'html' => FALSE,
     ),
   );
-      
+
   if ($delta == 'ding_modal_demo_block') {
     $block['subject'] = t('Ding Modal Demo');
     $block['content'] = $render;
@@ -157,5 +170,5 @@ function ding_modal_demo_baz_form_ajax_submit($form, $form_state) {
  * Demo form submit function.
  */
 function ding_modal_demo_baz_form_submit($form, $form_state) {
-  // 
+  //
 }

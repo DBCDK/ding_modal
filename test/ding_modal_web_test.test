@@ -53,11 +53,11 @@ class DingModalWebTestCase extends DrupalWebTestCase {
 
     $this->drupalGet('');
     $this->assertRaw('Link to modal text', 'Ding Modal Demo links block is present on front page');
-    
-    $this->assertLinkByHref('ding_modal_demo/foo');
-    
+
+    $this->assertLinkByHref('foo');
+
     // NB: JavaScript fire on pageload, so the link change to 'ding_modal/foo' don't fire
-    
+
   }
 
   /*
@@ -65,7 +65,7 @@ class DingModalWebTestCase extends DrupalWebTestCase {
    */
   private function _testDemoForm() {
 
-    $this->drupalGet('ding_modal_demo/baz');
+    $this->drupalGet('baz');
     $this->assertRaw('Join Baz', 'Subscription form is present');
 
   }

@@ -19,12 +19,10 @@
   DingModal.rewritelinks = function(ding_modal_setting, context) {
     var selectors = ding_modal_setting.selectors.join();
     // Rewrite link
-    $(selectors, context).attr({
+   // $(selectors, context).attr({
+    $(selectors).attr({
       'data-reveal-id': 'ding-modal',
-      'data-reveal-ajax': 'true',
-      'href': function(key, value) {
-        return value.replace(ding_modal_setting.replace, ding_modal_setting.path);
-      }
+      'data-reveal-ajax': 'true'
     }).addClass('ding-modal-' +  ding_modal_setting.id).addClass('use-ajax');
   };
 
@@ -56,7 +54,6 @@
   Drupal.behaviors.ding_modal = {
     attach: function(context, settings) {
       DingModal.setLinkActions(context);
-      DingModal.attachBehaviorsOnModal
     },
 
     detach: function(context) {

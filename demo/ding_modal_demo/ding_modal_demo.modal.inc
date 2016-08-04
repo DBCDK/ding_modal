@@ -13,19 +13,25 @@
 function ding_modal_demo_ding_modal_menus() {
 
   $items['foo'] = array(
-    '#replace' => 'ding_modal_demo/foo',
     'page callback' => 'ding_modal_demo_foo',
-    'file' => 'demo/ding_modal_demo/ding_modal_demo.modal.inc', // relative path from ding_modal
+    'file' => 'ding_modal_demo.modal.inc', // relative path from ding_modal
+    'selectors' => array(
+      'a[href$="foo"]'
+    )
   );
 
   $items['bar'] = array(
-    '#replace' => 'ding_modal_demo/bar',
-    '#form' => 'ding_modal_demo_bar_form',
+    'form_id' => 'ding_modal_demo_bar_form',
+    'selectors' => array(
+      'a[href$="bar"]'
+    )
   );
 
   $items['baz'] = array(
-    '#replace' => 'ding_modal_demo/baz',
-    '#form' => 'ding_modal_demo_baz_form',
+    'form_id' => 'ding_modal_demo_baz_form',
+    'selectors' => array(
+      'a[href$="baz"]'
+    )
   );
 
   return $items;

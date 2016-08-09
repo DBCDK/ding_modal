@@ -19,6 +19,7 @@
   DingModal.setLinkActions = function(context) {
     if (Drupal.settings.ding_modal) {
       // Rewrite links
+      var attachBehaviors = 0;
       for (var i in Drupal.settings.ding_modal.ding_modal_settings) {
           if (Drupal.settings.ding_modal.ding_modal_settings.hasOwnProperty(i)) {
               for (var n in Drupal.settings.ding_modal.ding_modal_settings[i].selectors) {
@@ -29,10 +30,14 @@
                           'data-reveal-id': 'ding-modal',
                           'data-reveal-ajax': 'true',
                       }).addClass('use-ajax');
-                      Drupal.attachBehaviors(selector, null);
+                      attachBehaviors = 1;
                   });
               }
           }
+      }
+      if ( attachBehaviors == 1 ) {
+        Drupal.attachBehaviors();
+        attachBehaviors = 0;
       }
     } else {
       console.log('WARNING: Drupal.settings.ding_modal is undefined');

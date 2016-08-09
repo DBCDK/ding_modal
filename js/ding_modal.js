@@ -16,22 +16,22 @@
     Drupal.attachBehaviors(modal, null);
   };
 
-  DingModal.rewritelinks = function(ding_modal_setting, context) {
-    var selectors = ding_modal_setting.selectors.join();
-    // Rewrite link
-   // $(selectors, context).attr({
-    $(selectors).attr({
-      'data-reveal-id': 'ding-modal',
-      'data-reveal-ajax': 'true'
-    }).addClass('ding-modal-' +  ding_modal_setting.id).addClass('use-ajax');
-  };
-
   DingModal.setLinkActions = function(context) {
     if (Drupal.settings.ding_modal) {
       // Rewrite links
       for (var i in Drupal.settings.ding_modal.ding_modal_settings) {
           if (Drupal.settings.ding_modal.ding_modal_settings.hasOwnProperty(i)) {
-              DingModal.rewritelinks(Drupal.settings.ding_modal.ding_modal_settings[i], context);
+              for (var n in Drupal.settings.ding_modal.ding_modal_settings[i].selectors) {
+                  var id = Drupal.settings.ding_modal.ding_modal_settings[i].id;
+                  var selector = Drupal.settings.ding_modal.ding_modal_settings[i].selectors[n];
+                  $(selector, context).once('ding-modal', function () { // adds a ding-modal-processed class
+                      $(selector).attr({
+                          'data-reveal-id': 'ding-modal',
+                          'data-reveal-ajax': 'true',
+                      }).addClass('use-ajax');
+                      Drupal.attachBehaviors(selector, null);
+                  });
+              }
           }
       }
     } else {

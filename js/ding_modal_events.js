@@ -6,8 +6,6 @@
 
       $(window).bind("load", function () {
 
-        Drupal.attachBehaviors($('#ding-modal'));
-
         // closing the offcanvas menu when popping a modal
         $(document).on('open.fndtn.reveal', '#ding-modal[data-reveal]', function () {
           console.log('modal-events: open');

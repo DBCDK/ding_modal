@@ -49,7 +49,7 @@ function ding_modal_demo_foo() {
 
   $render = array(
     '#theme' => 'ding_modal_theme',
-    '#title' => 'Fubar',
+    '#title' => 'Simple modal text document',
     '#content' => array(
       'foo' => array(
         '#markup' => t('Some basic text in a #markup'),
@@ -64,53 +64,4 @@ function ding_modal_demo_foo() {
 
 }
 
-
-function ding_modal_demo_bar_form() {
-
-  $form['bar'] = array(
-    '#type' => 'fieldset',
-    '#collapsible' => FALSE,
-  );
-
-  $form['bar']['ding_modal_foo'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Bar text', array(), array('context' => 'ding_modal')),
-    '#size' => 15,
-    '#default_value' => variable_get('ding_modal_foo', ''),
-  );
-
-  $form['bar']['ding_modal_bar'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Bar check', array(), array('context' => 'ding_modal')),
-    '#default_value' => variable_get('ding_modal_bar', ''),
-  );
-
-  $form['bar']['ding_modal_baz'] = array(
-    '#type' => 'submit',
-    '#name' => 'op2',
-    '#value' => t('Bar submit', array(), array('context' => 'ding_modal')),
-
-  );
-
-  $form['#submit'][] = 'ding_modal_demo_bar_form_submit';
-
-  return system_settings_form($form);
-
-}
-
-
-/**
- * Validation handler for ding_modal_bar_form_demo
- */
-function ding_modal_demo_bar_form_validate($form, &$form_state) {
-  // Dummy validation for demo purpose.
-}
-
-
-/**
- * Submt handler for ding_modal_bar_form_demo
- */
-function ding_modal_demo_bar_form_submit($form, &$form_state) {
-  // Dummy submit for demo purpose.
-}
 

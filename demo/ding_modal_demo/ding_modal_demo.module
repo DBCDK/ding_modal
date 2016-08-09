@@ -14,24 +14,26 @@ include_once 'ding_modal_demo.modal.inc';
   */
 function ding_modal_demo_menu() {
 
-  $items['baz'] = array(
-    'title' => 'Simple AJAX Example',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('ding_modal_demo_baz_form'),
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-  );
-
   $items['foo'] = array(
+    'title' => 'Simple modal text document',
     'page callback' => 'ding_modal_demo_foo',
     'file' => 'ding_modal_demo.modal.inc', // relative path from ding_modal
     'access callback' => TRUE,
   );
 
   $items['bar'] = array(
+    'title' => 'Modal Form with multiple submit buttons',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_modal_demo_bar_form'),
     'access callback' => TRUE,
+  );
+
+  $items['baz'] = array(
+    'title' => 'Modal form with AJAX callback and link to modal text',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_modal_demo_baz_form'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
   );
 
 
@@ -123,6 +125,19 @@ function ding_modal_demo_baz_form($form, &$form_state) {
   $form['#prefix'] = '<div id="ding_modal_demo_baz_form">';
   $form['#suffix'] = '</div>';
 
+  $form['foo'] = array(
+    '#theme' => 'link',
+    '#text' => 'Link to text that open in modal window',
+    '#path' => 'foo',
+    '#options' => array(
+      'attributes' => array(
+        'id' => "ding-modal-foo",
+      ),
+      'html' => FALSE,
+    ),
+    '#suffix' => '<br/>',
+  );
+
   $form['email'] = array(
     '#type' => 'textfield',
     '#title' => t('Join Baz'),
@@ -172,3 +187,68 @@ function ding_modal_demo_baz_form_ajax_submit($form, $form_state) {
 function ding_modal_demo_baz_form_submit($form, $form_state) {
   //
 }
+
+
+function ding_modal_demo_bar_form() {
+
+  $form['bar'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => FALSE,
+  );
+
+  $form['bar']['bar1'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => FALSE,
+    '#attributes' => array('class' => array('left')),
+    'ding_modal_bar' => array(
+      '#type' => 'checkbox',
+      '#title' => t('Bar check', array(), array('context' => 'ding_modal')),
+      '#default_value' => variable_get('ding_modal_bar', ''),
+    ),
+  );
+
+  $form['bar']['bar2'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => FALSE,
+    '#attributes' => array('class' => array('left')),
+    'ding_modal_foo' => array(
+      '#type' => 'textfield',
+      '#size' => 15,
+      '#default_value' => variable_get('ding_modal_foo', ''),
+      '#attributes' => array('foo' => 'bar'),
+    ),
+  );
+
+  $form['bar']['bar3'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => FALSE,
+    '#attributes' => array('class' => array('left')),
+    'ding_modal_baz' => array(
+      '#type' => 'submit',
+      '#name' => 'op2',
+      '#value' => t('A submit button', array(), array('context' => 'ding_modal')),
+    ),
+  );
+
+  $form['#submit'][] = 'ding_modal_demo_bar_form_submit';
+
+  return system_settings_form($form);
+
+}
+
+
+/**
+ * Validation handler for ding_modal_bar_form_demo
+ */
+function ding_modal_demo_bar_form_validate($form, &$form_state) {
+  // Dummy validation for demo purpose.
+}
+
+
+/**
+ * Submt handler for ding_modal_bar_form_demo
+ */
+function ding_modal_demo_bar_form_submit($form, &$form_state) {
+  // Dummy submit for demo purpose.
+}
+

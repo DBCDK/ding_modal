@@ -3,8 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 import sys
-lib_path = os.path.abspath(os.path.join('..', '..', 'scripts'))
-sys.path.append(lib_path)
+import time
 import selenium_helpers
 
 ###
@@ -16,6 +15,8 @@ class DingModalWebdriverTest(selenium_helpers.NetpunktBaseWebdriverTestCase):
         
     def test_title(self):
         self.browser.get(self.base_url)
+        print('HEST')
+        print(self.base_url)
+        print(self.browser.title)
+        time.sleep(5)
         assert "Netpunkt" in self.browser.title
-
-

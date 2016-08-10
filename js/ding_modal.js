@@ -53,8 +53,6 @@
 
   Drupal.behaviors.ding_modal = {
     attach: function (context, settings) {
-      console.log('TESTHSET');
-      console.log(context);
       DingModal.setLinkActions(context);
     },
 

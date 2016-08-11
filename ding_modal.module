@@ -21,22 +21,22 @@ function ding_modal_ajaxify_menu_item($menu_item, $modal_item){
   // ajax deliver
   $modal_item['delivery callback'] = 'ajax_deliver';
   // if form id is given: overwrite page callback
-  if(isset($modal_item['form_id'])){
+  if (isset($modal_item['form_id'])) {
     $modal_item['page callback'] = 'ding_modal_page_callback';
-    $modal_item['page arguments'] = array($modal_item['form_id']);
   }
+  
   return $modal_item + $menu_item;
 }
 
 /**
  * Menu callback that returns the form in an AJAX callback.
- * If JavaScript is disabled in the client we will never get here as
- * the link is being rewritten by client-side JavaScript.
  *
  * @return array
  */
 function ding_modal_page_callback($form_id) {
-  $form = drupal_get_form($form_id);
+
+  $form = call_user_func_array('drupal_get_form', func_get_args());
+
   // set ajax attributes on form
   _ding_modal_submit_attributes($form);
 

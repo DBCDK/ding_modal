@@ -14,24 +14,24 @@ include_once 'ding_modal_demo.modal.inc';
   */
 function ding_modal_demo_menu() {
 
-  $items['foo'] = array(
+  $items['ding_modal_demo/foo'] = array(
     'title' => 'Simple modal text document',
     'page callback' => 'ding_modal_demo_foo',
     'file' => 'ding_modal_demo.modal.inc', // relative path from ding_modal
     'access callback' => TRUE,
   );
 
-  $items['bar'] = array(
+  $items['ding_modal_demo/bar'] = array(
     'title' => 'Modal Form with multiple submit buttons',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_modal_demo_bar_form'),
     'access callback' => TRUE,
   );
 
-  $items['baz'] = array(
+  $items['ding_modal_demo/baz/%'] = array(
     'title' => 'Modal form with AJAX callback and link to modal text',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('ding_modal_demo_baz_form'),
+    'page arguments' => array('ding_modal_demo_baz_form', 2),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
@@ -72,7 +72,7 @@ function  ding_modal_demo_block_view($delta = '') {
   $render['foo'] = array(
     '#theme' => 'link',
     '#text' => 'Link to modal text',
-    '#path' => 'foo',
+    '#path' => 'ding_modal_demo/foo',
     '#options' => array(
       'attributes' => array(
         'id' => "ding-modal-foo",
@@ -85,7 +85,7 @@ function  ding_modal_demo_block_view($delta = '') {
   $render['bar'] = array(
     '#theme' => 'link',
     '#text' => 'Link to modal form',
-    '#path' => 'bar',
+    '#path' => 'ding_modal_demo/bar',
     '#options' => array(
       'attributes' => array(
         'id' => "ding-modal-bar",
@@ -98,7 +98,7 @@ function  ding_modal_demo_block_view($delta = '') {
   $render['baz'] = array(
     '#theme' => 'link',
     '#text' => 'Link to modal subscription form',
-    '#path' => 'baz',
+    '#path' => 'ding_modal_demo/baz/Kilroy%20was%20here',
     '#options' => array(
       'attributes' => array(
         'id' => "ding-modal-baz",
@@ -120,7 +120,7 @@ function  ding_modal_demo_block_view($delta = '') {
  /**
   * A simple subscribe form.
   */
-function ding_modal_demo_baz_form($form, &$form_state) {
+function ding_modal_demo_baz_form($form, &$form_state, $param) {
 
   $form['#prefix'] = '<div id="ding_modal_demo_baz_form">';
   $form['#suffix'] = '</div>';
@@ -149,6 +149,10 @@ function ding_modal_demo_baz_form($form, &$form_state) {
 
   $form['replace_textfield'] = array(
     '#markup' => '<p>Join Baz, it\'s great!</p>',
+  );
+
+  $form['param'] = array(
+    '#markup' => '<p>Parameter from path: "<b>' . urldecode($param) . '</b>"</p>',
   );
 
   $form['submit'] = array(

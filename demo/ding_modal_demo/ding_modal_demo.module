@@ -14,21 +14,29 @@ include_once 'ding_modal_demo.modal.inc';
   */
 function ding_modal_demo_menu() {
 
-  $items['ding_modal_demo/foo'] = array(
+  $items['foo'] = array(
     'title' => 'Simple modal text document',
     'page callback' => 'ding_modal_demo_foo',
     'file' => 'ding_modal_demo.modal.inc', // relative path from ding_modal
     'access callback' => TRUE,
   );
 
-  $items['ding_modal_demo/bar'] = array(
+  $items['bar'] = array(
     'title' => 'Modal Form with multiple submit buttons',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_modal_demo_bar_form'),
     'access callback' => TRUE,
   );
 
-  $items['ding_modal_demo/baz/%'] = array(
+  $items['baz'] = array(
+    'title' => 'Modal form with AJAX callback and link to modal text',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_modal_demo_baz_form', 2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['baz/%'] = array(
     'title' => 'Modal form with AJAX callback and link to modal text',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ding_modal_demo_baz_form', 2),

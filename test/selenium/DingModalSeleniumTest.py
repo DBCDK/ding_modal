@@ -15,8 +15,7 @@ class DingModalWebdriverTest(selenium_helpers.NetpunktBaseWebdriverTestCase):
         
     def test_title(self):
         self.browser.get(self.base_url)
-        print('HEST')
         print(self.base_url)
-        print(self.browser.title)
         time.sleep(5)
+        print('self.browser.title: ' + self.browser.title)
         assert "Netpunkt" in self.browser.title

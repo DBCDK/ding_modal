@@ -24,7 +24,7 @@ function ding_modal_ajaxify_menu_item($menu_item, $modal_item){
   if (isset($modal_item['form_id'])) {
     $modal_item['page callback'] = 'ding_modal_page_callback';
   }
-  
+
   return $modal_item + $menu_item;
 }
 
@@ -102,6 +102,9 @@ function ding_modal_invoke_menu_hook(){
  */
 function _ding_modal_submit_attributes(&$form) {
   foreach ($form as $key => $item) {
+    if(is_object($item)){
+      continue;
+    }
     if (!empty($item['#type']) && $item['#type'] == "submit") {
       $form[$key]['#attributes']['class'][] = 'use-ajax-submit';
       if (empty($form[$key]['#ajax'])) {

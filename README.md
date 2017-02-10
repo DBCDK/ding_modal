@@ -20,4 +20,8 @@ TROUBLESHOOTING:
 ['#ajax']['wrapper'] : 
 - if the form is called multiple times, note that the form id is subject to drupal_unique(),
   and may be unsuitable as a wrapper.
-  
+
+EXAMPLES:
+
+See the ding_modal_demo module.
+

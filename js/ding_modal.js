@@ -39,6 +39,27 @@
     }
   };
 
+  /**
+   * Handling printing from modal window.
+   *
+   * @param context
+   */
+  DingModal.printing = function (context) {
+    if ($("#ding-modal").html() !== "") {
+      $(window).bind("beforeprint", function () {
+
+        $("#mainwrapper").css("display", "none");
+        $("#ding-modal").css("top", "0");
+        $(".close-reveal-modal").css("visibility", "hidden");
+      });
+
+      $(window).bind("afterprint", function () {
+        $("#mainwrapper").css("display", "");
+        $(".close-reveal-modal").css("visibility", "visible");
+      });
+    }
+  };
+
   DingModal.addAccessibilityInfo = function (context) {
     var $modal = $("#ding-modal", context);
     $modal.attr("aria-hidden", false);
@@ -54,6 +75,9 @@
   Drupal.behaviors.ding_modal = {
     attach: function (context, settings) {
       DingModal.setLinkActions(context);
+
+      DingModal.printing(context);
+
     },
 
     detach: function (context) {

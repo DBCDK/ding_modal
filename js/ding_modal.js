@@ -44,11 +44,11 @@
    */
   DingModal.printing = function () {
 
-    var dingModal = $("#ding-modal");
+    $("#ding-modal").once('printing-modal', function() {
 
-    if (dingModal.html() !== "") {
+      var dingModal = $("#ding-modal");
 
-      dingModal.once('printing-modal', function() {
+      if (dingModal.html() !== "") {
 
         var top = dingModal.css("top");
 
@@ -64,8 +64,8 @@
           dingModal.css("top", top);
           $(".close-reveal-modal").css("visibility", "visible");
         });
-      });
-    }
+      }
+    });
   };
 
   DingModal.addAccessibilityInfo = function (context) {

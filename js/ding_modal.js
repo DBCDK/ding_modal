@@ -41,21 +41,29 @@
 
   /**
    * Handling printing from modal window.
-   *
-   * @param context
    */
-  DingModal.printing = function (context) {
-    if ($("#ding-modal").html() !== "") {
-      $(window).bind("beforeprint", function () {
+  DingModal.printing = function () {
 
-        $("#mainwrapper").css("display", "none");
-        $("#ding-modal").css("top", "0");
-        $(".close-reveal-modal").css("visibility", "hidden");
-      });
+    var dingModal = $("#ding-modal");
 
-      $(window).bind("afterprint", function () {
-        $("#mainwrapper").css("display", "");
-        $(".close-reveal-modal").css("visibility", "visible");
+    if (dingModal.html() !== "") {
+
+      dingModal.once('printing-modal', function() {
+
+        var top = dingModal.css("top");
+
+        $(window).bind("beforeprint", function () {
+
+          $("#mainwrapper").css("display", "none");
+          dingModal.css("top", "0");
+          $(".close-reveal-modal").css("visibility", "hidden");
+        });
+
+        $(window).bind("afterprint", function () {
+          $("#mainwrapper").css("display", "");
+          dingModal.css("top", top);
+          $(".close-reveal-modal").css("visibility", "visible");
+        });
       });
     }
   };
@@ -74,9 +82,10 @@
 
   Drupal.behaviors.ding_modal = {
     attach: function (context, settings) {
+
       DingModal.setLinkActions(context);
 
-      DingModal.printing(context);
+      DingModal.printing();
 
     },
 

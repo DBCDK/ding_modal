@@ -44,28 +44,25 @@
    */
   DingModal.printing = function () {
 
-    $("#ding-modal").once('printing-modal', function() {
+    var dingModal = $("#ding-modal");
+    var top = dingModal.css("top");
 
-      var dingModal = $("#ding-modal");
-
-      if (dingModal.html() !== "") {
-
-        var top = dingModal.css("top");
-
-        $(window).bind("beforeprint", function () {
-
-          $("#mainwrapper").css("display", "none");
-          dingModal.css("top", "0");
-          $(".close-reveal-modal").css("visibility", "hidden");
-        });
-
-        $(window).bind("afterprint", function () {
-          $("#mainwrapper").css("display", "");
-          dingModal.css("top", top);
-          $(".close-reveal-modal").css("visibility", "visible");
-        });
+    $(window).bind("beforeprint", function () {
+      if (dingModal.is(":visible")) {
+        $("#mainwrapper").css("display", "none");
+        dingModal.css("top", "0");
+        $(".close-reveal-modal").css("visibility", "hidden");
       }
     });
+
+    $(window).bind("afterprint", function () {
+      if (dingModal.is(":visible")) {
+        $("#mainwrapper").css("display", "");
+        dingModal.css("top", top);
+        $(".close-reveal-modal").css("visibility", "visible");
+      }
+    });
+
   };
 
   DingModal.addAccessibilityInfo = function (context) {
@@ -82,11 +79,7 @@
 
   Drupal.behaviors.ding_modal = {
     attach: function (context, settings) {
-
       DingModal.setLinkActions(context);
-
-      DingModal.printing();
-
     },
 
     detach: function (context) {
@@ -96,5 +89,9 @@
   };
 
   Drupal.DingModal = DingModal;
+
+  $(document).ready(function() {
+    DingModal.printing();
+  });
 
 })(jQuery);

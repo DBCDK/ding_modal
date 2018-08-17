@@ -39,6 +39,32 @@
     }
   };
 
+  /**
+   * Handling printing from modal window.
+   */
+  DingModal.printing = function () {
+
+    var dingModal = $("#ding-modal");
+    var top = dingModal.css("top");
+
+    $(window).bind("beforeprint", function () {
+      if (dingModal.is(":visible")) {
+        $("#mainwrapper").css("display", "none");
+        dingModal.css("top", "0");
+        $(".close-reveal-modal").css("visibility", "hidden");
+      }
+    });
+
+    $(window).bind("afterprint", function () {
+      if (dingModal.is(":visible")) {
+        $("#mainwrapper").css("display", "");
+        dingModal.css("top", top);
+        $(".close-reveal-modal").css("visibility", "visible");
+      }
+    });
+
+  };
+
   DingModal.addAccessibilityInfo = function (context) {
     var $modal = $("#ding-modal", context);
     $modal.attr("aria-hidden", false);
@@ -63,5 +89,9 @@
   };
 
   Drupal.DingModal = DingModal;
+
+  $(document).ready(function() {
+    DingModal.printing();
+  });
 
 })(jQuery);

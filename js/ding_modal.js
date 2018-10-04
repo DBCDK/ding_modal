@@ -17,6 +17,7 @@
   };
 
   DingModal.setLinkActions = function (context) {
+
     if (Drupal.settings.ding_modal) {
       // Rewrite links
       for (var i in Drupal.settings.ding_modal.ding_modal_settings) {
@@ -29,7 +30,7 @@
                 'data-reveal-id': 'ding-modal',
                 'data-reveal-ajax': 'true'
               }).addClass('use-ajax');
-              Drupal.attachBehaviors($(selector));
+             DingModal.customAttach(selector, context);
             });
           }
         }
@@ -37,6 +38,23 @@
     } else {
       console.log('WARNING: Drupal.settings.ding_modal is undefined');
     }
+  };
+
+  /**
+   * Wrapper for Drupal attach behaviors. Make sure it is only done once.
+   * Check if selector represents a list - probably a class selector - if so
+   * grab the parentnode for context and hope it is unique.
+   * @param selector
+   * @param context
+   */
+  DingModal.customAttach = function (selector, context) {
+    var element = $(selector);
+    if (element.length > 1) {
+      context = element[0].parentNode;
+    }
+    element.once('ding_modal_custom_attach', function(){
+      Drupal.attachBehaviors(context);
+    });
   };
 
   /**
@@ -80,17 +98,12 @@
   Drupal.behaviors.ding_modal = {
     attach: function (context, settings) {
       DingModal.setLinkActions(context);
-    },
-
-    detach: function (context) {
-      DingModal.removeAccessibilityInfo(context);
     }
-
-  };
+  }
 
   Drupal.DingModal = DingModal;
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     DingModal.printing();
   });
 

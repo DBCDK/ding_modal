@@ -8,4 +8,4 @@ files[] = test/ding_modal_web_test.test
 files[] = test/ding_modal_unit_test.test
 
 scripts[] = js/ding_modal.js
-;scripts[] = js/ding_modal_events.js
+

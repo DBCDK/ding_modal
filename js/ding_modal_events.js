@@ -3,9 +3,7 @@
   Drupal.behaviors.netpunkt_fndt_reveal = {
 
     attach: function(context, settings) {
-
-      $(window, context).bind("load", function () {
-
+      //$(window, context).bind("load", function () {
         // closing the offcanvas menu when popping a modal
         $(document, context).on('open.fndtn.reveal', '#ding-modal[data-reveal]', function () {
           console.log('modal-events: open');
@@ -17,15 +15,22 @@
         });
 
         // attaching behaviors when the modal have finished opening
-        $(document, context).on('opened.fndtn.reveal', '#ding-modal[data-reveal]', function () {
-          console.log('modal-events: opened');
-          toggleBehaviorsOnModal(true);
-          Drupal.DingModal.addAccessibilityInfo(window.document);
-          // onLoad.setFocus();
-          toggleMainwrapperOnSmallDevices(false);
-          $(document, context).foundation('reveal', 'reflow');
-          if (typeof(Drupal.ajax) == "undefined") { console.log("Drupal.ajax is undefined"); }
-          if (typeof(Drupal.settings.ding_modal) == "undefined") { console.log("Drupal.settings.ding_modal is undefined"); }
+        $(document, context).once('ding-modal', function () { // adds a ding-modal-processed class
+          $(document, context).on('opened.fndtn.reveal', '#ding-modal[data-reveal]', function () {
+            console.log('modal-events: opened');
+            toggleBehaviorsOnModal(true);
+            Drupal.DingModal.addAccessibilityInfo(window.document);
+            // onLoad.setFocus();
+            toggleMainwrapperOnSmallDevices(false);
+            $(document, context).foundation('reveal', 'reflow');
+            if (typeof(Drupal.ajax) == "undefined") {
+              console.log("Drupal.ajax is undefined");
+            }
+            if (typeof(Drupal.settings.ding_modal) == "undefined") {
+              console.log("Drupal.settings.ding_modal is undefined");
+            }
+          });
+
         });
 
         $(document, context).on('closed.fndtn.reveal', '#ding-modal[data-reveal]', function () {
@@ -79,7 +84,7 @@
             $mainwrapper.css("-ms-filter", "");
         }
 
-      });
+      //});
 
     }
 

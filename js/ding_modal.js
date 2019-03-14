@@ -26,7 +26,6 @@
             var id = Drupal.settings.ding_modal.ding_modal_settings[i].id;
             var selector = Drupal.settings.ding_modal.ding_modal_settings[i].selectors[n];
             $(selector, context).once('ding-modal', function () { // adds a ding-modal-processed class
-              // console.log(selector);
               $(selector).attr({
                 'data-reveal-id': 'ding-modal',
                 'data-reveal-ajax': 'true'

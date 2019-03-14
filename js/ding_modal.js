@@ -26,7 +26,7 @@
             var id = Drupal.settings.ding_modal.ding_modal_settings[i].id;
             var selector = Drupal.settings.ding_modal.ding_modal_settings[i].selectors[n];
             $(selector, context).once('ding-modal', function () { // adds a ding-modal-processed class
-              console.log(selector);
+              // console.log(selector);
               $(selector).attr({
                 'data-reveal-id': 'ding-modal',
                 'data-reveal-ajax': 'true'
@@ -54,15 +54,18 @@
    * @param context
    */
   DingModal.customAttach = function (selector, context) {
-    var element = $(selector);
-    if (element.length > 1) {
-      context = element[0].parentNode;
-    }
-    element.once('ding_modal_custom_attach', function(){
-      Drupal.attachBehaviors(context);
-    });
-  };
-
+     var element = $(selector);
+     if (element.length > 1) {
+       element.once('custom-attach').each(function (index) {
+         context = $(this)[0].parentNode;
+         Drupal.attachBehaviors(context);
+       })
+     }
+     else{
+       Drupal.attachBehaviors(context);
+     }
+   };
+   
   /**
    * Handling printing from modal window.
    */

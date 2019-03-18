@@ -8,6 +8,9 @@
  * '#replace' (the path to replace with 'ding_modal/key'), and '#form' should be set.
  * Or:
  * '#replace', and 'page callback' should be set.
+ * 
+ * Optional: 'selectors' = array('[jQuery selector]', '[jQuery selector]', ...)
+ * - add selectors for AJAX calls (uses DingModal.customAttach(selector, context))
  *
  * @return array
  */
@@ -25,6 +28,15 @@ function HOOK_ding_modal_menus(){
     '#form' => 'ding_modal_demo_bar_form',
   );
 
+  $items['key3'] = array(
+    '#replace' => 'ding_modal_demo/bar',
+    '#form' => 'ding_modal_demo_bar_form',
+  );
+
+  $items['foo/bar/%'] = array(
+    'page callback' => 'foo_bar_content',
+    'selectors' => array('.foo-link', '.bar a[data-foo]'),
+  );
   return $items;
 
 }

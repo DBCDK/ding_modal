@@ -30,7 +30,7 @@
                 'data-reveal-id': 'ding-modal',
                 'data-reveal-ajax': 'true'
               }).addClass('use-ajax');
-             DingModal.customAttach(selector, context);
+              // DingModal.customAttach(selector, context);
             });
           }
         }

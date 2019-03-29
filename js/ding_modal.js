@@ -26,12 +26,10 @@
             var id = Drupal.settings.ding_modal.ding_modal_settings[i].id;
             var selector = Drupal.settings.ding_modal.ding_modal_settings[i].selectors[n];
             $(selector, context).once('ding-modal', function () { // adds a ding-modal-processed class
-              console.log(selector);
               $(selector).attr({
                 'data-reveal-id': 'ding-modal',
                 'data-reveal-ajax': 'true'
               }).addClass('use-ajax');
-             DingModal.customAttach(selector, context);
             });
           }
         }
@@ -41,27 +39,6 @@
     }
   };
 
-  /**
-   * Wrapper for Drupal attach behaviors. Make sure it is only done once.
-   *
-   * Here is a hack to prevent
-   * Check if selector represents a list - probably a class selector - if so
-   * grab the parentnode for context and hope it is unique.
-   *
-   * NOTE this will not work if parentnode is also a selector defined in HOOK_ding_modal_menus
-   *
-   * @param selector
-   * @param context
-   */
-  DingModal.customAttach = function (selector, context) {
-    var element = $(selector);
-    if (element.length > 1) {
-      context = element[0].parentNode;
-    }
-    element.once('ding_modal_custom_attach', function(){
-      Drupal.attachBehaviors(context);
-    });
-  };
 
   /**
    * Handling printing from modal window.

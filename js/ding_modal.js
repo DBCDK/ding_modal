@@ -88,6 +88,9 @@
 
   $(document).ready(function () {
     DingModal.printing();
+    // Make sure behaviours on modal links are attached after a pageload.
+    var context = $('[data-reveal-id="ding-modal"]');
+    Drupal.attachBehaviors(context);
   });
 
 })(jQuery);

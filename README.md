@@ -25,3 +25,13 @@ EXAMPLES:
 
 See the ding_modal_demo module.
 
+NOTES:
+
+Drupal core will also call Drupal.attachBehaviors() in these scenarios:
+* After an administration overlay has been loaded into the page.
+* After the AJAX Form API has submitted a form.
+* When an AJAX request returns a command that modifies the HTML, such as ajax_command_replace().
+
+- if you don't use the Drupal AJAX framework when modifying the HTML with AJAX, you may need to 
+  call Drupal.attachBehaviors() yourself.
+  

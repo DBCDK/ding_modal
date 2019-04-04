@@ -28,6 +28,11 @@ function ding_modal_ajaxify_menu_item($menu_item, $modal_item){
   return $modal_item + $menu_item;
 }
 
+
+function ding_modal_element_info_alter( &$data){
+  array_push($data['ajax']['#commands'], netpunkt_frontend_force_appear());
+}
+
 /**
  * Menu callback that returns the form in an AJAX callback.
  *
@@ -48,6 +53,7 @@ function ding_modal_page_callback($form_id) {
 
   $commands[] = ajax_command_invoke('#ding-modal', 'foundation', array('reveal', 'open'));
   $commands[] = ajax_command_html('#ding-modal', drupal_render($render));
+  $commands[] = netpunkt_frontend_force_appear();
 
   return array('#type' => 'ajax', '#commands' => $commands);
 }

@@ -17,7 +17,7 @@
   <div id="ding-modal-messages">
     <?php print theme('status_messages'); ?>
   </div>
-  <div id="ding-modal-content">
+  <div id="ding-modal-content" data-track-content>
     <?php print drupal_render($content); ?>
   </div>
 </div>
